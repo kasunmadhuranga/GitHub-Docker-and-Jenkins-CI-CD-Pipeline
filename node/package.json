@@ -1,0 +1,27 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha ./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kasunmadhuranga/GitHub-Docker-and-Jenkins-CI-CD-Pipeline.git"
+  },
+  "author": "Kasun Madhuranga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kasunmadhuranga/GitHub-Docker-and-Jenkins-CI-CD-Pipeline/issues"
+  },
+  "homepage": "https://github.com/kasunmadhuranga/GitHub-Docker-and-Jenkins-CI-CD-Pipeline#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.4.0"
+  }
+}
