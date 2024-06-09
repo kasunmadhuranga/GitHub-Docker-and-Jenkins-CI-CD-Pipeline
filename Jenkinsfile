@@ -1,6 +1,9 @@
 pipeline {
     agent any 
-    
+    environment {
+        DOCKER_CREDENTIALS_ID = 'kasunfile' // Replace with your secret file ID
+        DOCKER_USERNAME = 'kazunm' // Docker username can be hardcoded or stored in another credential
+    }
     stages { 
         stage('SCM Checkout') {
             steps {
@@ -11,21 +14,25 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {  
-                bat 'docker build -t kazunm/nodeapp-cuban:%BUILD_NUMBER% .'
+                bat 'docker build -t kazunm/nodeapp-kas:%BUILD_NUMBER% .'
             }
         }
-        stage('Login to Docker Hub') {
+       stage('Login to Docker Hub') {
             steps {
-                withCredentials([string(credentialsId: 'test-dockerhubpassword', variable: 'test-dockerhubpw')]) {
-                    script {
-                        bat "docker login -u kazunm -p %test-dockerhubpw%"
+                script {
+                    withCredentials([file(credentialsId: DOCKER_CREDENTIALS_ID, variable: 'DOCKER_PASSWORD_FILE')]) {
+                        echo 'Logging into Docker Hub...'
+                        bat 'docker logout || true' // Ignore logout errors
+                        bat 'docker login -u %DOCKER_USERNAME% --password-stdin < %DOCKER_PASSWORD_FILE%'
                     }
                 }
             }
         }
-        stage('Push Image') {
+        stage('Push Docker Image') {
             steps {
-                bat 'docker push kazunm/nodeapp-cuban:%BUILD_NUMBER%'
+                script {
+                    bat 'docker push kazunm/nodeapp-kas:62'
+                }
             }
         }
     }
@@ -34,4 +41,5 @@ pipeline {
             bat 'docker logout'
         }
     }
+   
 }
